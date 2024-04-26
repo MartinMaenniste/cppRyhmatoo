@@ -14,6 +14,7 @@ private:
 	//Maatriksid on ühe pika jadana
 	std::vector<bool> pommid; //Pommide asetused
 	std::vector<int> ruudud; //Mängulaua numbrite/tühjade kohtade asetused, arvutatakse pommid vektori põhjal
+							 // -1 on pomm ise (pole vaja, sest kontrollitakse pommi asetust kõigepealt, aga igaks juhuks, et oleks selgem)
 	std::vector<char> mangijaLaud; //Mängulaud, mida mängija näeb - 
 								   // ' ' on tühi koht (pole ühtegi pommi kõrval) 
 								   // '!' on mängija asetatud lipp 
