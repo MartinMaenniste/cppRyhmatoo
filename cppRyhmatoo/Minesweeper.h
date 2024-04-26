@@ -9,6 +9,7 @@
 
 class Minesweeper {
 private:
+	bool mangOnLabi;
 	int korgus;
 	int laius;
 	size_t vektoritePikkus;
@@ -25,9 +26,13 @@ private:
 	void koostaPommid(int);
 	void koostaRuudud();
 	void koostaMangijaLaud();
+	void reedaMangulaud();
 public:
 	Minesweeper(int, int);
 
 	void koostaManguala(int);
 	void prindiMangulaud();
+	bool teeKaik(int, int, bool); //Tagastab true, kui sellist käiku sai teha, false, kui see ei ole lubatud käik (prindib meetodi sees välja, miks ei ole lubatud)
+								  // boolean kirjeldab, kas mängija tahab panna antud ruudule lippu või seda avada - true, kui tahab panna lippu, false, kui tahab seda avada
+	bool kasMangOnLabi();
 };

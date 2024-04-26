@@ -48,6 +48,7 @@ Minesweeper::Minesweeper(int k, int l) {
 	this->korgus = k;
 	this->laius = l;
 	this->vektoritePikkus = k*l;
+	this->mangOnLabi = false;
 }
 void Minesweeper::koostaPommid(int protsent) {
 	//Hulga sisse panen millistel indeksitel on pommid
@@ -100,14 +101,51 @@ void Minesweeper::koostaMangijaLaud() {
 		this->mangijaLaud.push_back('?');
 	}
 }
+void Minesweeper::reedaMangulaud() {
+	for (size_t i = 0; i < this->vektoritePikkus; i++) {
+		if (i % this->laius == 0) std::cout << "\n";
+		if (this->pommid.at(i)) std::cout << "X ";
+		else std::cout << this->ruudud.at(i) << " ";
+	}
+}
 void Minesweeper::prindiMangulaud() {
 	for (size_t i = 0; i < this->vektoritePikkus; i++) {
 		if (i % this->laius == 0) std::cout << std::endl;
 		std::cout << this->mangijaLaud.at(i) << ' ';
 	}
+	std::cout << "\n";
 }
 void Minesweeper::koostaManguala(int protsent) {
 	this->koostaPommid(protsent);
 	this->koostaRuudud();
 	this->koostaMangijaLaud();
+}
+bool Minesweeper::teeKaik(int rida, int veerg, bool kasLipp) {
+	if (rida < 0 || rida >= this->korgus || veerg < 0 || veerg >= this->laius) {
+		std::cout << "Valitud käik ei ole mängulaua sees!\n";
+		return false;
+	}
+	size_t indeks = rida * this->laius + veerg;
+	if (this->mangijaLaud.at(indeks) == '!') {
+		if (!kasLipp) {
+			std::cout << "Lipuga ruutu ei saa avada! (võta enne lipp ära)\n";
+			return false;
+		}
+		//Kui tegi uuesti lipu panemise käigu, siis võtame lipu ära
+		mangijaLaud[indeks] = '?';
+		return true;
+	}
+	if (kasLipp) this->mangijaLaud.at(indeks) = '!';
+	else {
+		if (this->pommid.at(indeks)) {
+			this->mangOnLabi = true;
+			std::cout << "Avasid pommi!\n";
+			this->reedaMangulaud();
+		}
+		else this->mangijaLaud.at(indeks) = '0' + this->ruudud.at(indeks);
+	}
+	return true;
+}
+bool Minesweeper::kasMangOnLabi() {
+	return this->mangOnLabi;
 }
