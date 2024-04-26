@@ -47,6 +47,7 @@ int loendaPommid(size_t ruuduIndeks, std::vector<bool> pommid, size_t pommidSize
 Minesweeper::Minesweeper(int k, int l) {
 	this->korgus = k;
 	this->laius = l;
+	this->vektoritePikkus = k*l;
 }
 void Minesweeper::koostaPommid(int protsent) {
 	//Hulga sisse panen millistel indeksitel on pommid
@@ -58,40 +59,55 @@ void Minesweeper::koostaPommid(int protsent) {
 	}
 
 	//Nüüd lisan pommide vektorisse pommid ja tühjad kohad
-	size_t pikkus = this->korgus * this->laius;
 	auto eiLeitudIteraator = pommid.end();
-	for (int indeks = 0; indeks < pikkus; indeks++) {
+	for (int indeks = 0; indeks < this->vektoritePikkus; indeks++) {
 		//find tagastab iteraatori otsitavale indeksile hulgas, kui see on end(), siis ei leitud
-		if (pommid.find(indeks) == eiLeitudIteraator) this->pommid.push_back(false);
-		else this->pommid.push_back(true);
+		this->pommid.push_back(pommid.find(indeks) != eiLeitudIteraator);
 	}
 
 	//  Testimiseks väljastan, hiljem ära võtta
-	pikkus = 0;
-	for (auto iter = this->pommid.begin(), lopp = this->pommid.end(); iter != lopp; iter++, pikkus++) {
-		if (pikkus % this->laius == 0)
+	std::cout << "Pommid (kasutaja ei näe seda):\n";
+	for (size_t i = 0; i < this->vektoritePikkus; i++) {
+		if (i % this->laius == 0)
 		{
 			std::cout << std::endl;
 		}
-		std::cout << *iter << " ";
+		std::cout << this->pommid.at(i) << " ";
 	}
-	std::cout << std::endl;
+	std::cout << "\n\n";
 }
 void Minesweeper::koostaRuudud() {
 	//Igale ruudule väärtustada loendaPommid() väärtus antud indeksil
-	size_t pikkus = this->pommid.size();
-	for (size_t i = 0; i < pikkus; i++) {
+	for (size_t i = 0; i < this->vektoritePikkus; i++) {
 		if(this->pommid.at(i)) this->ruudud.push_back(-1); //Kui on pomm, siis praegu paneme -1, pole otseselt vaja, aga nii selgem
-		else this->ruudud.push_back(loendaPommid(i, this->pommid, pikkus, this->laius)); //Kui pommi ei ole, loendame ümberringsed pommid ja seame selle väärtuseks
+		else this->ruudud.push_back(loendaPommid(i, this->pommid, this->vektoritePikkus, this->laius)); //Kui pommi ei ole, loendame ümberringsed pommid ja seame selle väärtuseks
 	}
 
 	// Testimiseks väljastan, hiljem ära võtta
-	for (auto iter = this->ruudud.begin(), lopp = this->ruudud.end(); iter != lopp; iter++, pikkus++) {
-		if (pikkus % this->laius == 0)
+	std::cout << "Ruudud (kasutaja ei näe seda):\n";
+	for (size_t i = 0; i < this->vektoritePikkus; i++) {
+		if (i % this->laius == 0)
 		{
 			std::cout << std::endl;
 		}
-		std::cout << *iter << " ";
+		if (this->ruudud.at(i) >= 0) std::cout << " "; //Lisatühik kui ei ole negatiivne, et saaks paremini aru
+		std::cout << this->ruudud.at(i) << " ";
 	}
-	std::cout << std::endl;
+	std::cout << "\n\n";
+}
+void Minesweeper::koostaMangijaLaud() {
+	for (size_t i = 0; i < this->ruudud.size(); i++) {
+		this->mangijaLaud.push_back('?');
+	}
+}
+void Minesweeper::prindiMangulaud() {
+	for (size_t i = 0; i < this->vektoritePikkus; i++) {
+		if (i % this->laius == 0) std::cout << std::endl;
+		std::cout << this->mangijaLaud.at(i) << ' ';
+	}
+}
+void Minesweeper::koostaManguala(int protsent) {
+	this->koostaPommid(protsent);
+	this->koostaRuudud();
+	this->koostaMangijaLaud();
 }

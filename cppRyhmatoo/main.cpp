@@ -17,8 +17,9 @@ int main() {
 	int protsent;
 	std::cin >> protsent;
 
-	ms->koostaPommid(protsent);
-	ms->koostaRuudud();
+	ms->koostaManguala(protsent);
+	
+	ms->prindiMangulaud();
 
 	return 0;
 }
