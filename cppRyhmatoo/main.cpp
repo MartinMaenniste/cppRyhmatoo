@@ -18,6 +18,7 @@ int main() {
 	std::cin >> protsent;
 
 	ms->koostaPommid(protsent);
+	ms->koostaRuudud();
 
 	return 0;
 }
