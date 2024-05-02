@@ -67,7 +67,7 @@ void Minesweeper::koostaPommid(int protsent) {
 	}
 
 	//  Testimiseks väljastan, hiljem ära võtta
-	std::cout << "Pommid (kasutaja ei näe seda):\n";
+	/*std::cout << "Pommid (kasutaja ei näe seda):\n";
 	for (size_t i = 0; i < this->vektoritePikkus; i++) {
 		if (i % this->laius == 0)
 		{
@@ -75,7 +75,7 @@ void Minesweeper::koostaPommid(int protsent) {
 		}
 		std::cout << this->pommid.at(i) << " ";
 	}
-	std::cout << "\n\n";
+	std::cout << "\n\n";*/
 }
 void Minesweeper::koostaRuudud() {
 	//Igale ruudule väärtustada loendaPommid() väärtus antud indeksil
@@ -85,7 +85,7 @@ void Minesweeper::koostaRuudud() {
 	}
 
 	// Testimiseks väljastan, hiljem ära võtta
-	std::cout << "Ruudud (kasutaja ei näe seda):\n";
+	/*std::cout << "Ruudud (kasutaja ei näe seda):\n";
 	for (size_t i = 0; i < this->vektoritePikkus; i++) {
 		if (i % this->laius == 0)
 		{
@@ -94,7 +94,7 @@ void Minesweeper::koostaRuudud() {
 		if (this->ruudud.at(i) >= 0) std::cout << " "; //Lisatühik kui ei ole negatiivne, et saaks paremini aru
 		std::cout << this->ruudud.at(i) << " ";
 	}
-	std::cout << "\n\n";
+	std::cout << "\n\n";*/
 }
 void Minesweeper::koostaMangijaLaud() {
 	for (size_t i = 0; i < this->ruudud.size(); i++) {
@@ -107,6 +107,20 @@ void Minesweeper::reedaMangulaud() {
 		if (this->pommid.at(i)) std::cout << "X ";
 		else std::cout << this->ruudud.at(i) << " ";
 	}
+}
+void Minesweeper::avaTuhjadRuudud(size_t indeks) { // Rekursiivselt avab kõik ruudud, mis on valitud ruudu kõrval, vastavalt valitud suunale
+	if (indeks > vektoritePikkus) return; //Kui jõuti liikumisega vektorist välja, siis see haru lõpetada
+	if (ruudud.at(indeks) != 0) return; //Kui jõuti ruuduni, mida ei peaks avama, siis see haru lõpetab töö
+	if (mangijaLaud.at(indeks) != '?') return; //Kui ruut on juba avatud, siis see haru lõpetab töö, et vältida tsüklite moodustumist ja lõputut rekursiooni
+
+	mangijaLaud.at(indeks) = '0' + ruudud.at(indeks); //Väärtustamine
+
+	//Rekursiivselt välja kutsumine - paremale, vasakule, alla, üles liikumine
+	
+	avaTuhjadRuudud(indeks+1);
+	avaTuhjadRuudud(indeks-1);
+	avaTuhjadRuudud(indeks+laius);
+	avaTuhjadRuudud(indeks-laius);
 }
 void Minesweeper::prindiMangulaud() {
 	for (size_t i = 0; i < this->vektoritePikkus; i++) {
@@ -142,7 +156,10 @@ bool Minesweeper::teeKaik(int rida, int veerg, bool kasLipp) {
 			std::cout << "Avasid pommi!\n";
 			this->reedaMangulaud();
 		}
-		else this->mangijaLaud.at(indeks) = '0' + this->ruudud.at(indeks);
+		else {
+			if (ruudud.at(indeks) == 0) avaTuhjadRuudud(indeks);
+			else this->mangijaLaud.at(indeks) = '0' + this->ruudud.at(indeks); //avaTuhjadRuudud juba avab selle ruudu enda ka
+		}
 	}
 	return true;
 }

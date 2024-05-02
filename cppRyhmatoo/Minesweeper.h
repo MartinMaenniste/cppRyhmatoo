@@ -16,7 +16,7 @@ private:
 	//Maatriksid on ühe pika jadana
 	std::vector<bool> pommid; //Pommide asetused
 	std::vector<int> ruudud; //Mängulaua numbrite/tühjade kohtade asetused, arvutatakse pommid vektori põhjal
-							 // -1 on pomm ise (pole vaja, sest kontrollitakse pommi asetust kõigepealt, aga igaks juhuks, et oleks selgem)
+							 // -1 on pomm ise (vaja tühjade ruutude avamise kontrolliks)
 	std::vector<char> mangijaLaud; //Mängulaud, mida mängija näeb -
 								   // '?' on koht, mida mängija pole veel avanud
 								   // ' ' on tühi koht (pole ühtegi pommi kõrval) 
@@ -27,6 +27,7 @@ private:
 	void koostaRuudud();
 	void koostaMangijaLaud();
 	void reedaMangulaud();
+	void avaTuhjadRuudud(size_t);
 public:
 	Minesweeper(int, int);
 
