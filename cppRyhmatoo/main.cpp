@@ -1,7 +1,7 @@
 #include "Minesweeper.h"
 
+
 int main() {
-	srand(static_cast<unsigned int> (time(0)));
 
 	std::cout << "Vali mängulaua kõrgus: ";
 	int korgus;
@@ -10,8 +10,14 @@ int main() {
 	std::cout << "Vali mängulaua laius: ";
 	int laius;
 	std::cin >> laius;
-
-	std::unique_ptr<Minesweeper> ms = std::make_unique<Minesweeper>(korgus, laius);
+	std::unique_ptr<Minesweeper> ms;
+	try {
+		ms = std::make_unique<Minesweeper>(korgus, laius, "Images");
+	}
+	catch (std::string s) {
+		std::cout << "Pildifailist " << s << " sisselugemine ebaõnnestus!\n";
+		return 0;
+	}
 
 	std::cout << "Mitu protsenti ruutudest võiksid olla pommid: ";
 	int protsent;
@@ -22,6 +28,27 @@ int main() {
 	int valitudRida, valitudVeerg;
 	bool lipuPanek, korrektneSisend{false};
 	char valik;
+
+	sf::RenderWindow window(sf::VideoMode(200, 200), "Minesweeper");
+	window.setFramerateLimit(30);
+	sf::CircleShape shape(100.f);
+	shape.setFillColor(sf::Color::Green);
+
+	while (window.isOpen() && !ms->kasMangOnLabi())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+			ms->handleEvent(event);
+		}
+
+		window.clear();
+		ms->kuvaMangulaud(window);
+		window.display();
+	}
+	/*
 	while (!ms->kasMangOnLabi())
 	{
 		ms->prindiMangulaud();
@@ -46,7 +73,7 @@ int main() {
 			}
 		}
 		ms->teeKaik(valitudRida, valitudVeerg, lipuPanek);
-	}
+	}*/
 
 	return 0;
 }

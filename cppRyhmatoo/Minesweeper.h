@@ -5,10 +5,24 @@
 #include <ctime>
 #include <set>
 #include <iterator>
-#include<iostream>
+#include <iostream>
+#include <SFML/Graphics.hpp>
 
 class Minesweeper {
 private:
+	sf::Texture pomm;
+	sf::Texture avamata;
+	sf::Texture tuhi;
+	sf::Texture lipp;
+	sf::Texture one;
+	sf::Texture two;
+	sf::Texture three;
+	sf::Texture four;
+	sf::Texture five;
+	sf::Texture six;
+	sf::Texture seven;
+	sf::Texture eight;
+
 	bool mangOnLabi;
 	int korgus;
 	int laius;
@@ -28,12 +42,14 @@ private:
 	void koostaMangijaLaud();
 	void reedaMangulaud();
 	void avaTuhjadRuudud(size_t);
+	void laeTekstuurid(std::string);
 public:
-	Minesweeper(int, int);
-
+	Minesweeper(int, int, std::string);
 	void koostaManguala(int);
 	void prindiMangulaud();
+	void kuvaMangulaud(sf::RenderWindow& window);
 	bool teeKaik(int, int, bool); //Tagastab true, kui sellist käiku sai teha, false, kui see ei ole lubatud käik (prindib meetodi sees välja, miks ei ole lubatud)
 								  // boolean kirjeldab, kas mängija tahab panna antud ruudule lippu või seda avada - true, kui tahab panna lippu, false, kui tahab seda avada
+	void handleEvent(sf::Event& event);
 	bool kasMangOnLabi();
 };

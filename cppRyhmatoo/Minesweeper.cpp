@@ -1,4 +1,5 @@
 #include "Minesweeper.h"
+#include <Windows.h>
 
 //Abimeetodid, hetkel lihtsalt kõige ees
 int loendaPommid(size_t ruuduIndeks, std::vector<bool> pommid, size_t pommidSize, int reaPikkus) {
@@ -44,11 +45,20 @@ int loendaPommid(size_t ruuduIndeks, std::vector<bool> pommid, size_t pommidSize
 	return loendur;
 }
 
-Minesweeper::Minesweeper(int k, int l) {
+Minesweeper::Minesweeper(int k, int l, std::string pildid) {
+	srand(static_cast<unsigned int> (time(0)));
+
 	this->korgus = k;
 	this->laius = l;
 	this->vektoritePikkus = k*l;
 	this->mangOnLabi = false;
+
+	try {
+		this->laeTekstuurid(pildid);
+	}
+	catch (std::string s) {
+		throw s;
+	}
 }
 void Minesweeper::koostaPommid(int protsent) {
 	//Hulga sisse panen millistel indeksitel on pommid
@@ -122,12 +132,78 @@ void Minesweeper::avaTuhjadRuudud(size_t indeks) { // Rekursiivselt avab kõik ru
 	avaTuhjadRuudud(indeks+laius);
 	avaTuhjadRuudud(indeks-laius);
 }
+void Minesweeper::laeTekstuurid(std::string pildid) {
+
+#if defined(_WIN32) || defined(_WIN64)
+	const std::string file_seperator = "\\";
+#else
+	const std::string file_seperator = "/";
+#endif
+	
+	std::string fail = pildid + file_seperator + "lipp.png";
+	if (!this->lipp.loadFromFile(fail)) throw fail;
+	
+	fail = pildid + file_seperator + "pomm.png";
+	if (!this->pomm.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "tuhi.png";
+	if (!this->tuhi.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "avamata.png";
+	if (!this->avamata.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "one.png";
+	if (!this->one.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "two.png";
+	if (!this->two.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "three.png";
+	if (!this->three.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "four.png";
+	if (!this->four.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "five.png";
+	if (!this->five.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "six.png";
+	if (!this->six.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "seven.png";
+	if (!this->seven.loadFromFile(fail)) throw fail;
+
+	fail = pildid + file_seperator + "eight.png";
+	if (!this->eight.loadFromFile(fail)) throw fail;
+}
 void Minesweeper::prindiMangulaud() {
 	for (size_t i = 0; i < this->vektoritePikkus; i++) {
 		if (i % this->laius == 0) std::cout << std::endl;
 		std::cout << this->mangijaLaud.at(i) << ' ';
 	}
 	std::cout << "\n";
+}
+void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
+	//Kuna akna suurust saab muuta, siis vaja välja arvutada ühe ruudu suurus, et alati oleks näha tervet mängulauda
+	 sf::Vector2u size = window.getSize();
+	 float ruuduLaius = size.x / this->laius;
+	 float ruuduKorgus = size.y / this->korgus;
+
+	 //koordinaadid, kuhu kuvada
+	 int reaIndeks{ 0 };
+	 int veeruIndeks{ 0 };
+	 for (size_t vektoriIndeks = 0; vektoriIndeks < this->vektoritePikkus; vektoriIndeks++) {
+		 //Uue rea alustamine
+		 if (vektoriIndeks % this->laius == 0 && vektoriIndeks != 0) {
+			 reaIndeks++;
+			 veeruIndeks = 0;
+		 }
+		 sf::RectangleShape ruut(sf::Vector2f(ruuduLaius, ruuduKorgus));
+		 ruut.setPosition((float)veeruIndeks*ruuduLaius, (float)reaIndeks*ruuduKorgus);
+		 window.draw(ruut);
+
+		 veeruIndeks++;
+	 }
 }
 void Minesweeper::koostaManguala(int protsent) {
 	this->koostaPommid(protsent);
@@ -162,6 +238,9 @@ bool Minesweeper::teeKaik(int rida, int veerg, bool kasLipp) {
 		}
 	}
 	return true;
+}
+void Minesweeper::handleEvent(sf::Event& event) {
+
 }
 bool Minesweeper::kasMangOnLabi() {
 	return this->mangOnLabi;
