@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include <map>
+#include <string>
 #include <vector>
 #include <cstdlib>
 #include <ctime>
@@ -23,7 +25,9 @@ private:
 	sf::Texture seven;
 	sf::Texture eight;
 
-	bool mangOnLabi;
+	std::map<char, sf::Texture> charTekstuuriks;
+
+	bool mangOnLabi, oliKaotus;
 	int korgus;
 	int laius;
 	size_t vektoritePikkus;
@@ -43,13 +47,16 @@ private:
 	void reedaMangulaud();
 	void avaTuhjadRuudud(size_t);
 	void laeTekstuurid(std::string);
+	bool koikRuududAvatud();
 public:
 	Minesweeper(int, int, std::string);
 	void koostaManguala(int);
-	void prindiMangulaud();
-	void kuvaMangulaud(sf::RenderWindow& window);
+	void kuvaMangulaud(sf::RenderWindow&);
+	void kuvaVoiduEkraan(sf::RenderWindow&);
+	void kuvaKaotusEkraan(sf::RenderWindow&);
 	bool teeKaik(int, int, bool); //Tagastab true, kui sellist käiku sai teha, false, kui see ei ole lubatud käik (prindib meetodi sees välja, miks ei ole lubatud)
 								  // boolean kirjeldab, kas mängija tahab panna antud ruudule lippu või seda avada - true, kui tahab panna lippu, false, kui tahab seda avada
-	void handleEvent(sf::Event& event);
+	void handleEvent(sf::Event&, const sf::Vector2u&);
 	bool kasMangOnLabi();
+	bool kasOliKaotus();
 };

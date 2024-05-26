@@ -25,14 +25,8 @@ int main() {
 
 	ms->koostaManguala(protsent);
 
-	int valitudRida, valitudVeerg;
-	bool lipuPanek, korrektneSisend{false};
-	char valik;
-
-	sf::RenderWindow window(sf::VideoMode(200, 200), "Minesweeper");
+	sf::RenderWindow window(sf::VideoMode(640, 480), "Minesweeper");
 	window.setFramerateLimit(30);
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
 
 	while (window.isOpen() && !ms->kasMangOnLabi())
 	{
@@ -41,14 +35,24 @@ int main() {
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			ms->handleEvent(event);
+			if (event.type == sf::Event::MouseButtonReleased)
+				ms->handleEvent(event, window.getSize());
 		}
 
 		window.clear();
 		ms->kuvaMangulaud(window);
 		window.display();
 	}
+	// Nüüd on mäng läbi - võit või kaotus saavutatud (või aken lihtsalt x nupust kinni pandud)
+	if (window.isOpen()) {
+		if (ms->kasOliKaotus()) ms->kuvaKaotusEkraan(window);
+		else ms->kuvaVoiduEkraan(window);
+	}
 	/*
+	int valitudRida, valitudVeerg;
+	bool lipuPanek, korrektneSisend{false};
+	char valik;
+	
 	while (!ms->kasMangOnLabi())
 	{
 		ms->prindiMangulaud();
