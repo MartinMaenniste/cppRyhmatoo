@@ -12,7 +12,7 @@ int main() {
 		return 0;
 	}
 
-	sf::RenderWindow window(sf::VideoMode(640, 480), "Minesweeper");
+	sf::RenderWindow window(sf::VideoMode(640, 640), "Minesweeper");
 	window.setFramerateLimit(30);
 
 	while (window.isOpen())

@@ -151,6 +151,7 @@ void Minesweeper::laeTekstuurid(std::string pildid) {
 	this->charTekstuuriks[' '] = this->tuhi;
 	this->charTekstuuriks['!'] = this->lipp;
 	this->charTekstuuriks['X'] = this->pomm;
+	this->charTekstuuriks['-1'] = this->pomm; //ruudud vektoris on pomm -1
 	this->charTekstuuriks['1'] = this->one;
 	this->charTekstuuriks['2'] = this->two;
 	this->charTekstuuriks['3'] = this->three;
@@ -218,11 +219,14 @@ void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
 	}
 }
 void Minesweeper::kuvaVoiduEkraan(sf::RenderWindow& window) {
-	std::cout << "Võidu ekraani sees!\n";
+	std::cout << "Sa võitsid! Vali uue mängulaua andmed:\n";
 }
 void Minesweeper::kuvaKaotusEkraan(sf::RenderWindow& window) {
 	this->reedaMangulaud();
+	window.clear();
 	this->kuvaMangulaud(window);
+	window.display();
+	std::cout << "Kaotasid :( Vali uue mängulaua andmed:\n";
 }
 void Minesweeper::koostaManguala(int protsent) {
 	this->koostaPommid(protsent);
