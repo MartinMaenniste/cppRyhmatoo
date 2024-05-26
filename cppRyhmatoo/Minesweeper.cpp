@@ -46,7 +46,7 @@ int loendaPommid(size_t ruuduIndeks, std::vector<bool> pommid, size_t pommidSize
 	return loendur;
 }
 
-Minesweeper::Minesweeper(int k, int l, std::string pildid) {
+Minesweeper::Minesweeper(std::string pildid) {
 	srand(static_cast<unsigned int> (time(0)));
 
 	this->mangOnLabi = false;
@@ -111,12 +111,12 @@ void Minesweeper::avaTuhjadRuudud(size_t indeks) { // Rekursiivselt avab kõik ru
 	avaTuhjadRuudud(indeks-laius);
 }
 void Minesweeper::laeTekstuurid(std::string pildid) {
-	
+
 	const char file_seperator = std::filesystem::path::preferred_separator;
 
 	std::string fail = pildid + file_seperator + "lipp.png";
 	if (!this->lipp.loadFromFile(fail)) throw fail;
-	
+
 	fail = pildid + file_seperator + "pomm.png";
 	if (!this->pomm.loadFromFile(fail)) throw fail;
 
@@ -149,7 +149,7 @@ void Minesweeper::laeTekstuurid(std::string pildid) {
 
 	fail = pildid + file_seperator + "eight.png";
 	if (!this->eight.loadFromFile(fail)) throw fail;
-	
+
 	this->charTekstuuriks['?'] = this->avamata;
 	this->charTekstuuriks[' '] = this->tuhi;
 	this->charTekstuuriks['!'] = this->lipp;
@@ -307,7 +307,7 @@ void Minesweeper::kusiManguLauaAndmed() {
 		std::cin >> protsent;
 
 		//Arvutamine, mitu pommi sellise protsendiga oleks
-		mituPommi = (this->korgus * this->laius * protsent) / 100 ;
+		mituPommi = (this->korgus * this->laius * (protsent / 100));
 		//Kui pomme pole (või on neg. arv) või kui kõik on pommid, siis ei luba seda, laseme uuesti sisestada
 		if (mituPommi <= 0 || mituPommi == this->vektoritePikkus) continue;
 

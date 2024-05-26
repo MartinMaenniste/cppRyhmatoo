@@ -3,27 +3,14 @@
 
 int main() {
 
-	std::cout << "Vali mängulaua kõrgus: ";
-	int korgus;
-	std::cin >> korgus;
-
-	std::cout << "Vali mängulaua laius: ";
-	int laius;
-	std::cin >> laius;
 	std::unique_ptr<Minesweeper> ms;
 	try {
-		ms = std::make_unique<Minesweeper>(korgus, laius, "Images");
+		ms = std::make_unique<Minesweeper>("Images");
 	}
 	catch (std::string s) {
 		std::cout << "Pildifailist " << s << " sisselugemine ebaõnnestus!\n";
 		return 0;
 	}
-
-	std::cout << "Mitu protsenti ruutudest võiksid olla pommid: ";
-	int protsent;
-	std::cin >> protsent;
-
-	ms->koostaManguala(protsent);
 
 	sf::RenderWindow window(sf::VideoMode(640, 480), "Minesweeper");
 	window.setFramerateLimit(30);

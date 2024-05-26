@@ -49,7 +49,7 @@ private:
 	void laeTekstuurid(std::string);
 	bool koikRuududAvatud();
 public:
-	Minesweeper(int, int, std::string);
+	Minesweeper(std::string);
 	void koostaManguala(int);
 	void kuvaMangulaud(sf::RenderWindow&);
 	void kuvaVoiduEkraan(sf::RenderWindow&);
