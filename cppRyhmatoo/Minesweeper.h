@@ -59,4 +59,6 @@ public:
 	void handleEvent(sf::Event&, const sf::Vector2u&);
 	bool kasMangOnLabi();
 	bool kasOliKaotus();
+
+	void kusiManguLauaAndmed();
 };

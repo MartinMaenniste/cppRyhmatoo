@@ -28,7 +28,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(640, 480), "Minesweeper");
 	window.setFramerateLimit(30);
 
-	while (window.isOpen() && !ms->kasMangOnLabi())
+	while (window.isOpen())
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -42,11 +42,12 @@ int main() {
 		window.clear();
 		ms->kuvaMangulaud(window);
 		window.display();
-	}
-	// Nüüd on mäng läbi - võit või kaotus saavutatud (või aken lihtsalt x nupust kinni pandud)
-	if (window.isOpen()) {
-		if (ms->kasOliKaotus()) ms->kuvaKaotusEkraan(window);
-		else ms->kuvaVoiduEkraan(window);
+
+		if (ms->kasMangOnLabi()) {
+			//if (ms->kasOliKaotus()) ms->kuvaKaotusEkraan(window);
+			/*else*/ ms->kuvaVoiduEkraan(window);
+			ms->kusiManguLauaAndmed();
+		}
 	}
 	/*
 	int valitudRida, valitudVeerg;
