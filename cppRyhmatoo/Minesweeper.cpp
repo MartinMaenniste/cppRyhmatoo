@@ -49,8 +49,6 @@ int loendaPommid(size_t ruuduIndeks, std::vector<bool> pommid, size_t pommidSize
 Minesweeper::Minesweeper(std::string pildid) {
 	srand(static_cast<unsigned int> (time(0)));
 
-	this->mangOnLabi = false;
-
 	this->kusiManguLauaAndmed();
 
 	try {
@@ -90,10 +88,9 @@ void Minesweeper::koostaMangijaLaud() {
 }
 void Minesweeper::reedaMangulaud() {
 	for (size_t i = 0; i < this->vektoritePikkus; i++) {
-		if (i % this->laius == 0) std::cout << "\n";
 		if (this->pommid.at(i)) this->mangijaLaud.at(i) = 'X';
 		else if (this->ruudud.at(i) == 0) this->mangijaLaud.at(i) = ' ';
-		else this->mangijaLaud.at(i) = this->ruudud.at(i);
+		else this->mangijaLaud.at(i) = '0' + this->ruudud.at(i);
 	}
 }
 void Minesweeper::avaTuhjadRuudud(size_t indeks) { // Rekursiivselt avab kõik ruudud, mis on valitud ruudu kõrval, vastavalt valitud suunale
@@ -169,9 +166,20 @@ bool Minesweeper::koikRuududAvatud() {
 
 	//Kontrollin, kas leidub veel avamata ruute
 	// - mangijaLaud vektoris on avamata ruut '?'
+	size_t leitudLippe{ 0 };
+
 	for (auto iter = this->mangijaLaud.begin(), lopp = mangijaLaud.end(); iter != lopp; iter++) {
 		if (*iter == '?') return false;
+		if (*iter == '!') leitudLippe++; //Loendame leitud lipud kokku
 	}
+	//Kui kõik ruudud on "avatud" - ehk avamata ruute pole, siis kontrollida, kas lippe on õige arv
+	size_t lippe{ 0 };
+	//Loendame kokku, mitu pommi peaks olema
+	for (auto iter = this->pommid.begin(), lopp = pommid.end(); iter != lopp; iter++) {
+		if (*iter) lippe++;
+	}
+	//kui loendatud lippe ei ole sama palju kui pomme, siis midagi valesti ja ei saa olla mäng läbi
+	if (leitudLippe != lippe) return false;
 	return true;
 }
 
@@ -181,9 +189,6 @@ void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
 	sf::Vector2u size = window.getSize();
 	float ruuduLaius = (float)size.x / (float)this->laius;
 	float ruuduKorgus = (float)size.y / (float)this->korgus;
-
-	std::cout << "ruutL: " << ruuduLaius << " windowx: " << size.x << "  ";
-	std::cout << "ruutK: " << ruuduKorgus << " windowy: " << size.y << "\n";
 
 	//koordinaadid, kuhu kuvada
 	int reaIndeks{ 0 };
@@ -213,12 +218,11 @@ void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
 	}
 }
 void Minesweeper::kuvaVoiduEkraan(sf::RenderWindow& window) {
-	this->reedaMangulaud();
-	this->kuvaMangulaud(window);
-
+	std::cout << "Võidu ekraani sees!\n";
 }
 void Minesweeper::kuvaKaotusEkraan(sf::RenderWindow& window) {
-	std::cout << "Kaotuse ekraani sees!\n";
+	this->reedaMangulaud();
+	this->kuvaMangulaud(window);
 }
 void Minesweeper::koostaManguala(int protsent) {
 	this->koostaPommid(protsent);
@@ -260,13 +264,10 @@ void Minesweeper::handleEvent(sf::Event& event, const sf::Vector2u& aknaSuurus) 
 	bool kasLipp = event.mouseButton.button == sf::Mouse::Right;
 	int xKoordinaat = event.mouseButton.x;
 	int yKoordinaat = event.mouseButton.y;
-	std::cout << "mousex" << xKoordinaat << " mousey " << yKoordinaat << std::endl;
 
 	//Koordinaat ümber teha mängulaua koordinaadiks
 	xKoordinaat /= aknaSuurus.x / this->laius;
 	yKoordinaat /= aknaSuurus.y / this->korgus;
-	std::cout << "aknalaius " << aknaSuurus.x << " this.laius " << this->laius << " aknakorgus " << aknaSuurus.y << " this.korgus " << this->korgus << std::endl;
-	std::cout << "loppx " << xKoordinaat << " loppy " << yKoordinaat << std::endl;
 
 	//teeKaik funktsioon ootab rida enne veergu
 	teeKaik(yKoordinaat, xKoordinaat, kasLipp);
@@ -278,6 +279,8 @@ bool Minesweeper::kasOliKaotus() {
 	return this->oliKaotus;
 }
 void Minesweeper::kusiManguLauaAndmed() {
+	this->mangOnLabi = false;
+
 	int k{ 0 };
 	int l{ 0 };
 	while (true) {
@@ -313,6 +316,10 @@ void Minesweeper::kusiManguLauaAndmed() {
 
 		break;
 	}
+
+	this->pommid.clear();
+	this->ruudud.clear();
+	this->mangijaLaud.clear();
 
 	this->koostaManguala(protsent);
 }
