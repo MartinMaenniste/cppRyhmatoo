@@ -31,8 +31,8 @@ int main() {
 		window.display();
 
 		if (ms->kasMangOnLabi()) {
-			//if (ms->kasOliKaotus()) ms->kuvaKaotusEkraan(window);
-			/*else*/ ms->kuvaVoiduEkraan(window);
+			if (ms->kasOliKaotus()) ms->kuvaKaotusEkraan(window);
+			else ms->kuvaVoiduEkraan(window);
 			ms->kusiManguLauaAndmed();
 		}
 	}

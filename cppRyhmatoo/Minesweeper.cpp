@@ -307,7 +307,7 @@ void Minesweeper::kusiManguLauaAndmed() {
 		std::cin >> protsent;
 
 		//Arvutamine, mitu pommi sellise protsendiga oleks
-		mituPommi = (this->korgus * this->laius * (protsent / 100));
+		mituPommi = (this->korgus * this->laius * protsent) / 100;
 		//Kui pomme pole (või on neg. arv) või kui kõik on pommid, siis ei luba seda, laseme uuesti sisestada
 		if (mituPommi <= 0 || mituPommi == this->vektoritePikkus) continue;
 
