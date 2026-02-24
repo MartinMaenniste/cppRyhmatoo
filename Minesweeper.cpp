@@ -2,23 +2,23 @@
 #include <filesystem>
 #include <fstream>
 
-//Abimeetodid, hetkel lihtsalt kõige ees
+//Abimeetodid, hetkel lihtsalt kï¿½ige ees
 int loendaPommid(size_t ruuduIndeks, std::vector<bool> pommid, size_t pommidSize, int reaPikkus) {
-	//Leiab indeksi ümber asuvad pommid - kõik on üks pikk järjend, vaja kontrollida maatriksi mõttes tema ümber olemist
+	//Leiab indeksi ï¿½mber asuvad pommid - kï¿½ik on ï¿½ks pikk jï¿½rjend, vaja kontrollida maatriksi mï¿½ttes tema ï¿½mber olemist
 
 	int loendur{ 0 };
 
-	size_t kontrollitavIndeks{ ruuduIndeks - reaPikkus - 1 }; //Algväärtustame ruudust ülesse, vasakule
-	// Unsigned int läheb negatiivselt out of bounds puhul oma maxvalue peale, seega kontrollin alati, et on suurem.
-	// - kuna meie mängulaua mõõtmete korrutis peaks alati olema väiksem kui unsigned int max value, ei tohiks probleeme tekkida
+	size_t kontrollitavIndeks{ ruuduIndeks - reaPikkus - 1 }; //Algvï¿½ï¿½rtustame ruudust ï¿½lesse, vasakule
+	// Unsigned int lï¿½heb negatiivselt out of bounds puhul oma maxvalue peale, seega kontrollin alati, et on suurem.
+	// - kuna meie mï¿½ngulaua mï¿½ï¿½tmete korrutis peaks alati olema vï¿½iksem kui unsigned int max value, ei tohiks probleeme tekkida
 	if (kontrollitavIndeks < pommid.size()) { //Kui ei ole out of bounds
 		if (pommid.at(kontrollitavIndeks)) loendur++; //Kui seal on pomm, suurendan loendurit
 	}
-	kontrollitavIndeks++; //Liigun ühe võrra paremale ehk ruudust otse üles
+	kontrollitavIndeks++; //Liigun ï¿½he vï¿½rra paremale ehk ruudust otse ï¿½les
 	if (kontrollitavIndeks < pommid.size()) {
 		if (pommid.at(kontrollitavIndeks)) loendur++;
 	}
-	kontrollitavIndeks++; //Liigun ühe võrra paremale ehk ruudust üles paremale
+	kontrollitavIndeks++; //Liigun ï¿½he vï¿½rra paremale ehk ruudust ï¿½les paremale
 	if (kontrollitavIndeks < pommid.size()) {
 		if (pommid.at(kontrollitavIndeks)) loendur++;
 	}
@@ -64,10 +64,10 @@ void Minesweeper::koostaPommid(int protsent) {
 	std::set<int> pommid;
 	while (pommid.size() != mituPommi)
 	{
-		pommid.insert(rand() % (korgus*laius)); //Täidan kuni on piisavalt pomme
+		pommid.insert(rand() % (korgus*laius)); //Tï¿½idan kuni on piisavalt pomme
 	}
 
-	//Nüüd lisan pommide vektorisse pommid ja tühjad kohad
+	//Nï¿½ï¿½d lisan pommide vektorisse pommid ja tï¿½hjad kohad
 	auto eiLeitudIteraator = pommid.end();
 	for (int indeks = 0; indeks < this->vektoritePikkus; indeks++) {
 		//find tagastab iteraatori otsitavale indeksile hulgas, kui see on end(), siis ei leitud
@@ -75,10 +75,10 @@ void Minesweeper::koostaPommid(int protsent) {
 	}
 }
 void Minesweeper::koostaRuudud() {
-	//Igale ruudule väärtustada loendaPommid() väärtus antud indeksil
+	//Igale ruudule vï¿½ï¿½rtustada loendaPommid() vï¿½ï¿½rtus antud indeksil
 	for (size_t i = 0; i < this->vektoritePikkus; i++) {
 		if(this->pommid.at(i)) this->ruudud.push_back(-1); //Kui on pomm, siis praegu paneme -1, pole otseselt vaja, aga nii selgem
-		else this->ruudud.push_back(loendaPommid(i, this->pommid, this->vektoritePikkus, this->laius)); //Kui pommi ei ole, loendame ümberringsed pommid ja seame selle väärtuseks
+		else this->ruudud.push_back(loendaPommid(i, this->pommid, this->vektoritePikkus, this->laius)); //Kui pommi ei ole, loendame ï¿½mberringsed pommid ja seame selle vï¿½ï¿½rtuseks
 	}
 }
 void Minesweeper::koostaMangijaLaud() {
@@ -93,14 +93,15 @@ void Minesweeper::reedaMangulaud() {
 		else this->mangijaLaud.at(i) = '0' + this->ruudud.at(i);
 	}
 }
-void Minesweeper::avaTuhjadRuudud(size_t indeks) { // Rekursiivselt avab kõik ruudud, mis on valitud ruudu kõrval, vastavalt valitud suunale
-	if (indeks > vektoritePikkus) return; //Kui jõuti liikumisega vektorist välja, siis see haru lõpetada
-	if (ruudud.at(indeks) != 0) return; //Kui jõuti ruuduni, mida ei peaks avama, siis see haru lõpetab töö
-	if (mangijaLaud.at(indeks) != '?') return; //Kui ruut on juba avatud, siis see haru lõpetab töö, et vältida tsüklite moodustumist ja lõputut rekursiooni
+void Minesweeper::avaTuhjadRuudud(size_t indeks) { // Rekursiivselt avab kï¿½ik ruudud, mis on valitud ruudu kï¿½rval, vastavalt valitud suunale
+	if (indeks > vektoritePikkus) return; //Kui jï¿½uti liikumisega vektorist vï¿½lja, siis see haru lï¿½petada
+	//	Peaks avama ka numberruudud tÃ¼hjade ruutude Ã¼mber!!
+	if (ruudud.at(indeks) != 0) return; //Kui jï¿½uti ruuduni, mida ei peaks avama, siis see haru lï¿½petab tï¿½ï¿½
+	if (mangijaLaud.at(indeks) != '?') return; //Kui ruut on juba avatud, siis see haru lï¿½petab tï¿½ï¿½, et vï¿½ltida tsï¿½klite moodustumist ja lï¿½putut rekursiooni
 
-	mangijaLaud.at(indeks) = '0' + ruudud.at(indeks); //Väärtustamine
+	mangijaLaud.at(indeks) = '0' + ruudud.at(indeks); //Vï¿½ï¿½rtustamine
 
-	//Rekursiivselt välja kutsumine - paremale, vasakule, alla, üles liikumine
+	//Rekursiivselt vï¿½lja kutsumine - paremale, vasakule, alla, ï¿½les liikumine
 	
 	avaTuhjadRuudud(indeks+1);
 	avaTuhjadRuudud(indeks-1);
@@ -123,35 +124,35 @@ void Minesweeper::laeTekstuurid(std::string pildid) {
 	fail = pildid + file_seperator + "avamata.png";
 	if (!this->avamata.loadFromFile(fail)) throw fail;
 
-	fail = pildid + file_seperator + "one.png";
+	fail = pildid + file_seperator + "yks.png";
 	if (!this->one.loadFromFile(fail)) throw fail;
 
-	fail = pildid + file_seperator + "two.png";
+	fail = pildid + file_seperator + "kaks.png";
 	if (!this->two.loadFromFile(fail)) throw fail;
 
-	fail = pildid + file_seperator + "three.png";
+	fail = pildid + file_seperator + "kolm.png";
 	if (!this->three.loadFromFile(fail)) throw fail;
 
-	fail = pildid + file_seperator + "four.png";
+	fail = pildid + file_seperator + "neli.png";
 	if (!this->four.loadFromFile(fail)) throw fail;
 
-	fail = pildid + file_seperator + "five.png";
+	fail = pildid + file_seperator + "viis.png";
 	if (!this->five.loadFromFile(fail)) throw fail;
 
-	fail = pildid + file_seperator + "six.png";
+	fail = pildid + file_seperator + "kuus.png";
 	if (!this->six.loadFromFile(fail)) throw fail;
 
-	fail = pildid + file_seperator + "seven.png";
+	fail = pildid + file_seperator + "seitse.png";
 	if (!this->seven.loadFromFile(fail)) throw fail;
 
-	fail = pildid + file_seperator + "eight.png";
+	fail = pildid + file_seperator + "kaheksa.png";
 	if (!this->eight.loadFromFile(fail)) throw fail;
 
 	this->charTekstuuriks['?'] = this->avamata;
 	this->charTekstuuriks[' '] = this->tuhi;
 	this->charTekstuuriks['!'] = this->lipp;
 	this->charTekstuuriks['X'] = this->pomm;
-	this->charTekstuuriks['-1'] = this->pomm; //ruudud vektoris on pomm -1
+	this->charTekstuuriks['-'] = this->pomm; //ruudud vektoris on pomm -1
 	this->charTekstuuriks['1'] = this->one;
 	this->charTekstuuriks['2'] = this->two;
 	this->charTekstuuriks['3'] = this->three;
@@ -162,7 +163,7 @@ void Minesweeper::laeTekstuurid(std::string pildid) {
 	this->charTekstuuriks['8'] = this->eight;
 }
 bool Minesweeper::koikRuududAvatud() {
-	//Kui mäng on juba läbi, siis rohkem ruute ei saa avada
+	//Kui mï¿½ng on juba lï¿½bi, siis rohkem ruute ei saa avada
 	if (this->mangOnLabi) return true;
 
 	//Kontrollin, kas leidub veel avamata ruute
@@ -173,20 +174,20 @@ bool Minesweeper::koikRuududAvatud() {
 		if (*iter == '?') return false;
 		if (*iter == '!') leitudLippe++; //Loendame leitud lipud kokku
 	}
-	//Kui kõik ruudud on "avatud" - ehk avamata ruute pole, siis kontrollida, kas lippe on õige arv
+	//Kui kï¿½ik ruudud on "avatud" - ehk avamata ruute pole, siis kontrollida, kas lippe on ï¿½ige arv
 	size_t lippe{ 0 };
 	//Loendame kokku, mitu pommi peaks olema
 	for (auto iter = this->pommid.begin(), lopp = pommid.end(); iter != lopp; iter++) {
 		if (*iter) lippe++;
 	}
-	//kui loendatud lippe ei ole sama palju kui pomme, siis midagi valesti ja ei saa olla mäng läbi
+	//kui loendatud lippe ei ole sama palju kui pomme, siis midagi valesti ja ei saa olla mï¿½ng lï¿½bi
 	if (leitudLippe != lippe) return false;
 	return true;
 }
 
-//Kõik muudatused, mis on vahepeal tehtud, on salvestatud mängijaLaud muutujasse, võtan sealt info ja kuvan ekraanile
+//Kï¿½ik muudatused, mis on vahepeal tehtud, on salvestatud mï¿½ngijaLaud muutujasse, vï¿½tan sealt info ja kuvan ekraanile
 void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
-	//Kuna akna suurust saab muuta, siis vaja välja arvutada ühe ruudu suurus, et alati oleks näha tervet mängulauda
+	//Kuna akna suurust saab muuta, siis vaja vï¿½lja arvutada ï¿½he ruudu suurus, et alati oleks nï¿½ha tervet mï¿½ngulauda
 	sf::Vector2u size = window.getSize();
 	float ruuduLaius = (float)size.x / (float)this->laius;
 	float ruuduKorgus = (float)size.y / (float)this->korgus;
@@ -200,9 +201,9 @@ void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
 			reaIndeks++;
 			veeruIndeks = 0;
 		}
-		//Mängulaua vektori abil saada õige tekstuur, mida kuvada
-		sf::RectangleShape ruut(sf::Vector2f(ruuduLaius, ruuduKorgus));
-		ruut.setPosition((float)veeruIndeks*ruuduLaius, (float)reaIndeks*ruuduKorgus);
+		//MÃ¤ngulaua vektori abil saada Ãµige tekstuur, mida kuvada
+		sf::RectangleShape ruut = sf::RectangleShape(sf::Vector2f(ruuduLaius, ruuduKorgus));
+		ruut.setPosition(sf::Vector2f((float)veeruIndeks*ruuduLaius, (float)reaIndeks*ruuduKorgus));//(float)veeruIndeks*ruuduLaius, (float)reaIndeks*ruuduKorgus);
 
 		sf::Texture& kuvatavTekstuur = this->charTekstuuriks[this->mangijaLaud.at(vektoriIndeks)];
 		ruut.setTexture(&kuvatavTekstuur);
@@ -212,21 +213,21 @@ void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
 		veeruIndeks++;
 	}
 
-	//Mängulaua kuvamise ajaks on käik tehtud, saab kontrollida, kas kõik ruudud on avatud - ehk kas mängja on võitnud
+	//Mï¿½ngulaua kuvamise ajaks on kï¿½ik tehtud, saab kontrollida, kas kï¿½ik ruudud on avatud - ehk kas mï¿½ngja on vï¿½itnud
 	if (koikRuududAvatud() && !this->mangOnLabi) {
 		this->mangOnLabi = true;
 		this->oliKaotus = false;
 	}
 }
 void Minesweeper::kuvaVoiduEkraan(sf::RenderWindow& window) {
-	std::cout << "Sa võitsid! Vali uue mängulaua andmed:\n";
+	std::cout << "Sa vï¿½itsid! Vali uue mï¿½ngulaua andmed:\n";
 }
 void Minesweeper::kuvaKaotusEkraan(sf::RenderWindow& window) {
 	this->reedaMangulaud();
 	window.clear();
 	this->kuvaMangulaud(window);
 	window.display();
-	std::cout << "Kaotasid :( Vali uue mängulaua andmed:\n";
+	std::cout << "Kaotasid :( Vali uue mï¿½ngulaua andmed:\n";
 }
 void Minesweeper::koostaManguala(int protsent) {
 	this->koostaPommid(protsent);
@@ -234,19 +235,19 @@ void Minesweeper::koostaManguala(int protsent) {
 	this->koostaMangijaLaud();
 }
 
-//Funktsioon muudab mängija lauda, alles kuvaMangulaud näitab uuendusi ekraanile
+//Funktsioon muudab mï¿½ngija lauda, alles kuvaMangulaud nï¿½itab uuendusi ekraanile
 bool Minesweeper::teeKaik(int rida, int veerg, bool kasLipp) {
 	if (rida < 0 || rida >= this->korgus || veerg < 0 || veerg >= this->laius) {
-		std::cout << "Valitud käik ei ole mängulaua sees!\n";
+		std::cout << "Valitud kÃ¤ik ei ole mÃ¤ngulaua sees!\n";
 		return false;
 	}
 	size_t indeks = rida * this->laius + veerg;
 	if (this->mangijaLaud.at(indeks) == '!') {
 		if (!kasLipp) {
-			std::cout << "Lipuga ruutu ei saa avada! (võta enne lipp ära)\n";
+			std::cout << "Lipuga ruutu ei saa avada! (vï¿½ta enne lipp ï¿½ra)\n";
 			return false;
 		}
-		//Kui tegi uuesti lipu panemise käigu, siis võtame lipu ära
+		//Kui tegi uuesti lipu panemise kï¿½igu, siis vï¿½tame lipu ï¿½ra
 		mangijaLaud[indeks] = '?';
 		return true;
 	}
@@ -264,14 +265,14 @@ bool Minesweeper::teeKaik(int rida, int veerg, bool kasLipp) {
 	}
 	return true;
 }
-void Minesweeper::handleEvent(sf::Event& event, const sf::Vector2u& aknaSuurus) {
-	bool kasLipp = event.mouseButton.button == sf::Mouse::Right;
-	int xKoordinaat = event.mouseButton.x;
-	int yKoordinaat = event.mouseButton.y;
+void Minesweeper::handleEvent(const sf::RenderWindow& aken, const sf::Mouse::Button& event) {
+	bool kasLipp = event == sf::Mouse::Button::Right; // event.mouseButton.button == sf::Mouse::Right;
+	int xKoordinaat = sf::Mouse::getPosition(aken).x; //event.mouseButton.x;
+	int yKoordinaat = sf::Mouse::getPosition(aken).y; //event.mouseButton.y;
 
-	//Koordinaat ümber teha mängulaua koordinaadiks
-	xKoordinaat /= aknaSuurus.x / this->laius;
-	yKoordinaat /= aknaSuurus.y / this->korgus;
+	//Koordinaat Ã¼mber teha mÃ¤ngulaua koordinaadiks
+	xKoordinaat /= aken.getSize().x / this->laius;
+	yKoordinaat /= aken.getSize().y / this->korgus;
 
 	//teeKaik funktsioon ootab rida enne veergu
 	teeKaik(yKoordinaat, xKoordinaat, kasLipp);
@@ -288,16 +289,16 @@ void Minesweeper::kusiManguLauaAndmed() {
 	int k{ 0 };
 	int l{ 0 };
 	while (true) {
-		std::cout << "Vali mängulaua kõrgus: ";
+		std::cout << "Vali mÃ¤ngulaua kÃµrgus: ";
 		
 		std::cin >> k;
 		//Kuna fixed ekraani suurus, siis ei saa olla negatiivne arv (ega 0) ega suurem kui ekraani laius
 		if (k <= 0 || k > 640) continue;
 
-		std::cout << "Vali mängulaua laius: ";
+		std::cout << "Vali mÃ¤ngulaua laius: ";
 		
 		std::cin >> l;
-		//Samamoodi, ei saa olla suurem kui ekraani kõrgus ega negatiivne ega null
+		//Samamoodi, ei saa olla suurem kui ekraani kï¿½rgus ega negatiivne ega null
 		if (l <= 0 || l > 480) continue;
 
 		this->korgus = k;
@@ -309,13 +310,13 @@ void Minesweeper::kusiManguLauaAndmed() {
 
 	int protsent{ 0 }, mituPommi{ 0 };
 	while (true) {
-		std::cout << "Mitu protsenti ruutudest võiksid olla pommid: ";
+		std::cout << "Mitu protsenti ruutudest vÃµiksid olla pommid: ";
 	
 		std::cin >> protsent;
 
 		//Arvutamine, mitu pommi sellise protsendiga oleks
 		mituPommi = (this->korgus * this->laius * protsent) / 100;
-		//Kui pomme pole (või on neg. arv) või kui kõik on pommid, siis ei luba seda, laseme uuesti sisestada
+		//Kui pomme pole (vï¿½i on neg. arv) vï¿½i kui kï¿½ik on pommid, siis ei luba seda, laseme uuesti sisestada
 		if (mituPommi <= 0 || mituPommi == this->vektoritePikkus) continue;
 
 		break;

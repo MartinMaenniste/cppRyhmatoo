@@ -5,25 +5,36 @@ int main() {
 
 	std::unique_ptr<Minesweeper> ms;
 	try {
-		ms = std::make_unique<Minesweeper>("Images");
-	}
+		ms = std::make_unique<Minesweeper>("Pildid"); // Constructor takes directory with pictures.
+	}												// When a specific picture fails to load, filename is thrown as error.
 	catch (std::string s) {
-		std::cout << "Pildifailist " << s << " sisselugemine ebaõnnestus!\n";
+		std::cout << "Pildifailist " << s << " sisselugemine ebaÃµnnestus!\n";
 		return 0;
 	}
 
-	sf::RenderWindow window(sf::VideoMode(640, 640), "Minesweeper");
+	sf::RenderWindow window(sf::VideoMode({640, 480}), "Minesweeper", sf::Style::Default);//, sf::Style::Titlebar | sf::Style::Close);
 	window.setFramerateLimit(30);
 
+	sf::View view;
 	while (window.isOpen())
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
+		while (const std::optional event = window.pollEvent())
 		{
-			if (event.type == sf::Event::Closed)
+			if (event->is<sf::Event::Closed>())
 				window.close();
-			if (event.type == sf::Event::MouseButtonReleased)
-				ms->handleEvent(event, window.getSize());
+			else if (const auto* mouseButton = event->getIf<sf::Event::MouseButtonPressed>()) // Mouseevent instead!!
+				ms->handleEvent(window, mouseButton->button);
+			if (const auto* resized = event->getIf<sf::Event::Resized>())
+			{
+        		sf::FloatRect visibleArea(
+                {0.f, 0.f},
+                {static_cast<float>(resized->size.x),
+                static_cast<float>(resized->size.y)}
+            	);
+
+            	view = sf::View(visibleArea);
+            	window.setView(view);
+    		}
 		}
 
 		window.clear();
@@ -37,6 +48,7 @@ int main() {
 		}
 	}
 	/*
+	// Esialgne versioon - terminalis
 	int valitudRida, valitudVeerg;
 	bool lipuPanek, korrektneSisend{false};
 	char valik;
@@ -46,14 +58,14 @@ int main() {
 		ms->prindiMangulaud();
 		korrektneSisend = false;
 
-		//Tuleks kontrollida iga väärtuse puhul veel, et sisestati õige andmetüüp - errorite kinnipüüdmisega ilmselt
+		//Tuleks kontrollida iga vï¿½ï¿½rtuse puhul veel, et sisestati ï¿½ige andmetï¿½ï¿½p - errorite kinnipï¿½ï¿½dmisega ilmselt
 		
 		std::cout << "Vali rida: ";
 		std::cin >> valitudRida;
 		std::cout << "Vali veerg: ";
 		std::cin >> valitudVeerg;
 		while (!korrektneSisend) {
-			std::cout << "Vali kas panna lipp või avada see mängulaua ruut (l - pane lipp, a - ava ruut): ";
+			std::cout << "Vali kas panna lipp vï¿½i avada see mï¿½ngulaua ruut (l - pane lipp, a - ava ruut): ";
 			std::cin >> valik;
 			if (valik == 'l') {
 				lipuPanek = true;

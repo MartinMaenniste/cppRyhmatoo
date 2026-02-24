@@ -31,16 +31,16 @@ private:
 	int korgus;
 	int laius;
 	size_t vektoritePikkus;
-	//Maatriksid on ühe pika jadana
+	//Maatriksid on ï¿½he pika jadana
 	std::vector<bool> pommid; //Pommide asetused
-	std::vector<int> ruudud; //Mängulaua numbrite/tühjade kohtade asetused, arvutatakse pommid vektori põhjal
-							 // -1 on pomm ise (vaja tühjade ruutude avamise kontrolliks)
-	std::vector<char> mangijaLaud; //Mängulaud, mida mängija näeb -
-								   // '?' on koht, mida mängija pole veel avanud
-								   // ' ' on tühi koht (pole ühtegi pommi kõrval) 
-								   // '!' on mängija asetatud lipp 
-								   // 'n' on konkreetne number, mis ütleb, mitu pommi on ümberringi 
-								   // 'X' on pomm - kui mängija avas pommi, näidatakse kogu mängulauda ja mäng lõppeb
+	std::vector<int> ruudud; //Mï¿½ngulaua numbrite/tï¿½hjade kohtade asetused, arvutatakse pommid vektori pï¿½hjal
+							 // -1 on pomm ise (vaja tï¿½hjade ruutude avamise kontrolliks)
+	std::vector<char> mangijaLaud; //Mï¿½ngulaud, mida mï¿½ngija nï¿½eb -
+								   // '?' on koht, mida mï¿½ngija pole veel avanud
+								   // ' ' on tï¿½hi koht (pole ï¿½htegi pommi kï¿½rval) 
+								   // '!' on mï¿½ngija asetatud lipp 
+								   // 'n' on konkreetne number, mis ï¿½tleb, mitu pommi on ï¿½mberringi 
+								   // 'X' on pomm - kui mï¿½ngija avas pommi, nï¿½idatakse kogu mï¿½ngulauda ja mï¿½ng lï¿½ppeb
 	void koostaPommid(int);
 	void koostaRuudud();
 	void koostaMangijaLaud();
@@ -54,9 +54,9 @@ public:
 	void kuvaMangulaud(sf::RenderWindow&);
 	void kuvaVoiduEkraan(sf::RenderWindow&);
 	void kuvaKaotusEkraan(sf::RenderWindow&);
-	bool teeKaik(int, int, bool); //Tagastab true, kui sellist käiku sai teha, false, kui see ei ole lubatud käik (prindib meetodi sees välja, miks ei ole lubatud)
-								  // boolean kirjeldab, kas mängija tahab panna antud ruudule lippu või seda avada - true, kui tahab panna lippu, false, kui tahab seda avada
-	void handleEvent(sf::Event&, const sf::Vector2u&);
+	bool teeKaik(int, int, bool); //Tagastab true, kui sellist kï¿½iku sai teha, false, kui see ei ole lubatud kï¿½ik (prindib meetodi sees vï¿½lja, miks ei ole lubatud)
+								  // boolean kirjeldab, kas mï¿½ngija tahab panna antud ruudule lippu vï¿½i seda avada - true, kui tahab panna lippu, false, kui tahab seda avada
+	void handleEvent(const sf::RenderWindow&, const sf::Mouse::Button&);
 	bool kasMangOnLabi();
 	bool kasOliKaotus();
 
