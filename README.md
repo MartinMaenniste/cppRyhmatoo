@@ -29,7 +29,6 @@ make
  - SFML, versioon 3 (lihtsaim on kasutada enda süsteemi paketihaldurit)<br />
  - C++ keele kompilaator (Vaikimisi kasutatakse g++, endale sobiva kompilaatori kasutamiseks muuta failis "Makefile" muutujat "COMPILER")<br />
  - make (käsk ei pruugi kõikide süsteemidega kaasa tulla)<br />
-<br />
 #### Näidis programmi kasutamisest:<br />
 ```shell
 git clone https://github.com/MartinMaenniste/cppRyhmatoo.git
