@@ -37,7 +37,7 @@ cd cppRyhmatoo
 
 make
 ./rungame
-```
+```<br />
 ## Windows
 Programmi pole veel Windows operatsioonisüsteemi peal testitud!<br />
 Üldised tingimused programmi kasutamiseks on samad, mis Linux'i puhul - SFML 3 ja C++ kompilaator. Sõltuvalt, kas programmi kasutada läbi mõne konkreetse IDE või *make* funktsionaalsuse, on vaja programm erinevalt sätestada.<br />
