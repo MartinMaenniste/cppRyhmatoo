@@ -93,20 +93,20 @@ void Minesweeper::reedaMangulaud() {
 		else this->mangijaLaud.at(i) = '0' + this->ruudud.at(i);
 	}
 }
-void Minesweeper::avaTuhjadRuudud(size_t indeks) { // Rekursiivselt avab k�ik ruudud, mis on valitud ruudu k�rval, vastavalt valitud suunale
+void Minesweeper::avaTuhjadRuudud(const size_t indeks, const int tuliRuudult) { // Rekursiivselt avab k�ik ruudud, mis on valitud ruudu k�rval, vastavalt valitud suunale
 	if (indeks > vektoritePikkus) return; //Kui j�uti liikumisega vektorist v�lja, siis see haru l�petada
 	//	Peaks avama ka numberruudud tühjade ruutude ümber!!
-	if (ruudud.at(indeks) != 0) return; //Kui j�uti ruuduni, mida ei peaks avama, siis see haru l�petab t��
+	if (ruudud.at(indeks) != 0 || tuliRuudult != 0) {mangijaLaud.at(indeks) = '0' + ruudud.at(indeks); return;}; //Kui j�uti ruuduni, mida ei peaks avama, siis see haru l�petab t��
 	if (mangijaLaud.at(indeks) != '?') return; //Kui ruut on juba avatud, siis see haru l�petab t��, et v�ltida ts�klite moodustumist ja l�putut rekursiooni
 
 	mangijaLaud.at(indeks) = '0' + ruudud.at(indeks); //V��rtustamine
 
 	//Rekursiivselt v�lja kutsumine - paremale, vasakule, alla, �les liikumine
 	
-	avaTuhjadRuudud(indeks+1);
-	avaTuhjadRuudud(indeks-1);
-	avaTuhjadRuudud(indeks+laius);
-	avaTuhjadRuudud(indeks-laius);
+	avaTuhjadRuudud(indeks+1, ruudud.at(indeks));
+	avaTuhjadRuudud(indeks-1, ruudud.at(indeks));
+	avaTuhjadRuudud(indeks+laius, ruudud.at(indeks));
+	avaTuhjadRuudud(indeks-laius, ruudud.at(indeks));
 }
 void Minesweeper::laeTekstuurid(std::string pildid) {
 
@@ -220,14 +220,14 @@ void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
 	}
 }
 void Minesweeper::kuvaVoiduEkraan(sf::RenderWindow& window) {
-	std::cout << "Sa v�itsid! Vali uue m�ngulaua andmed:\n";
+	std::cout << "Sa v�itsid! Vali uue mängulaua andmed:\n";
 }
 void Minesweeper::kuvaKaotusEkraan(sf::RenderWindow& window) {
 	this->reedaMangulaud();
 	window.clear();
 	this->kuvaMangulaud(window);
 	window.display();
-	std::cout << "Kaotasid :( Vali uue m�ngulaua andmed:\n";
+	std::cout << "Kaotasid :( Vali uue mängulaua andmed:\n";
 }
 void Minesweeper::koostaManguala(int protsent) {
 	this->koostaPommid(protsent);
@@ -244,7 +244,7 @@ bool Minesweeper::teeKaik(int rida, int veerg, bool kasLipp) {
 	size_t indeks = rida * this->laius + veerg;
 	if (this->mangijaLaud.at(indeks) == '!') {
 		if (!kasLipp) {
-			std::cout << "Lipuga ruutu ei saa avada! (v�ta enne lipp �ra)\n";
+			std::cout << "Lipuga ruutu ei saa avada! (võta enne lipp ära)\n";
 			return false;
 		}
 		//Kui tegi uuesti lipu panemise k�igu, siis v�tame lipu �ra
@@ -259,7 +259,7 @@ bool Minesweeper::teeKaik(int rida, int veerg, bool kasLipp) {
 			std::cout << "Avasid pommi!\n";
 		}
 		else {
-			if (ruudud.at(indeks) == 0) avaTuhjadRuudud(indeks);
+			if (ruudud.at(indeks) == 0) avaTuhjadRuudud(indeks, 0);
 			else this->mangijaLaud.at(indeks) = '0' + this->ruudud.at(indeks); //avaTuhjadRuudud juba avab selle ruudu enda ka
 		}
 	}

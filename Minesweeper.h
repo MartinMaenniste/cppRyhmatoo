@@ -45,7 +45,7 @@ private:
 	void koostaRuudud();
 	void koostaMangijaLaud();
 	void reedaMangulaud();
-	void avaTuhjadRuudud(size_t);
+	void avaTuhjadRuudud(const size_t, const int);
 	void laeTekstuurid(std::string);
 	bool koikRuududAvatud();
 public:
