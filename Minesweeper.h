@@ -27,7 +27,7 @@ private:
 
 	std::map<char, sf::Texture> charTekstuuriks;
 
-	bool mangOnLabi, oliKaotus;
+	bool mangOnLabi, oliKaotus, kuvaGraafiliselt;
 	int korgus;
 	int laius;
 	size_t vektoritePikkus;
@@ -56,9 +56,12 @@ public:
 	void kuvaKaotusEkraan(sf::RenderWindow&);
 	bool teeKaik(int, int, bool); //Tagastab true, kui sellist k�iku sai teha, false, kui see ei ole lubatud k�ik (prindib meetodi sees v�lja, miks ei ole lubatud)
 								  // boolean kirjeldab, kas m�ngija tahab panna antud ruudule lippu v�i seda avada - true, kui tahab panna lippu, false, kui tahab seda avada
+	void kaikTerminalis();
 	void handleEvent(const sf::RenderWindow&, const sf::Mouse::Button&);
 	bool kasMangOnLabi();
 	bool kasOliKaotus();
 
 	void kusiManguLauaAndmed();
+
+	bool getKuvaGraafika();
 };

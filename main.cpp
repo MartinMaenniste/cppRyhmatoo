@@ -1,6 +1,5 @@
 #include "Minesweeper.h"
 
-
 int main() {
 
 	std::unique_ptr<Minesweeper> ms;
@@ -18,28 +17,39 @@ int main() {
 	sf::View view;
 	while (window.isOpen())
 	{
-		while (const std::optional event = window.pollEvent())
+		if(ms->getKuvaGraafika())
 		{
-			if (event->is<sf::Event::Closed>())
-				window.close();
-			else if (const auto* mouseButton = event->getIf<sf::Event::MouseButtonPressed>()) // Mouseevent instead!!
-				ms->handleEvent(window, mouseButton->button);
-			if (const auto* resized = event->getIf<sf::Event::Resized>())
+			while (const std::optional event = window.pollEvent())
 			{
-        		sf::FloatRect visibleArea(
-                {0.f, 0.f},
-                {static_cast<float>(resized->size.x),
-                static_cast<float>(resized->size.y)}
-            	);
+				if (event->is<sf::Event::Closed>())
+					window.close();
+				else if (const auto* mouseButton = event->getIf<sf::Event::MouseButtonPressed>()) // Mouseevent instead!!
+					ms->handleEvent(window, mouseButton->button);
+				if (const auto* resized = event->getIf<sf::Event::Resized>())
+				{
+        			sf::FloatRect visibleArea(
+                	{0.f, 0.f},
+                	{static_cast<float>(resized->size.x),
+                	static_cast<float>(resized->size.y)}
+            		);
 
-            	view = sf::View(visibleArea);
-            	window.setView(view);
-    		}
+            		view = sf::View(visibleArea);
+            		window.setView(view);
+    			}
+			}
+		}
+		else
+		{
+			ms->kuvaMangulaud(window);
+			ms->kaikTerminalis();
 		}
 
-		window.clear();
-		ms->kuvaMangulaud(window);
-		window.display();
+		if(ms->getKuvaGraafika()) 
+		{
+			window.clear();
+			ms->kuvaMangulaud(window);
+			window.display();
+		}
 
 		if (ms->kasMangOnLabi()) {
 			if (ms->kasOliKaotus()) ms->kuvaKaotusEkraan(window);
@@ -77,6 +87,8 @@ int main() {
 			}
 		}
 		ms->teeKaik(valitudRida, valitudVeerg, lipuPanek);
+
+
 	}*/
 
 	return 0;

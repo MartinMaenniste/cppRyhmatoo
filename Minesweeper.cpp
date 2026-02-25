@@ -187,6 +187,20 @@ bool Minesweeper::koikRuududAvatud() {
 
 //K�ik muudatused, mis on vahepeal tehtud, on salvestatud m�ngijaLaud muutujasse, v�tan sealt info ja kuvan ekraanile
 void Minesweeper::kuvaMangulaud(sf::RenderWindow& window) {
+	if(!this->kuvaGraafiliselt)
+	{
+		for(int i = 0; i < this->mangijaLaud.size(); i++)
+		{
+			if (i % this->laius == 0)
+			{
+				std::cout << "\n";
+			}
+			std::cout << mangijaLaud.at(i) << " ";
+		}
+		std::cout << "\n";
+		return;
+	}
+	
 	//Kuna akna suurust saab muuta, siis vaja v�lja arvutada �he ruudu suurus, et alati oleks n�ha tervet m�ngulauda
 	sf::Vector2u size = window.getSize();
 	float ruuduLaius = (float)size.x / (float)this->laius;
@@ -224,9 +238,17 @@ void Minesweeper::kuvaVoiduEkraan(sf::RenderWindow& window) {
 }
 void Minesweeper::kuvaKaotusEkraan(sf::RenderWindow& window) {
 	this->reedaMangulaud();
-	window.clear();
-	this->kuvaMangulaud(window);
-	window.display();
+	
+	if(!this->kuvaGraafiliselt)
+	{
+		this->kuvaMangulaud(window);
+	}
+	else
+	{
+		window.clear();
+		this->kuvaMangulaud(window);
+		window.display();
+	}
 	std::cout << "Kaotasid :( Vali uue mängulaua andmed:\n";
 }
 void Minesweeper::koostaManguala(int protsent) {
@@ -265,6 +287,42 @@ bool Minesweeper::teeKaik(int rida, int veerg, bool kasLipp) {
 	}
 	return true;
 }
+void Minesweeper::kaikTerminalis()
+{
+	int x{ -1 };
+	int y{ -1 };
+	int l{ -1 };
+
+	std::cout << "NB! Sisendi kontroll ei ole täiuslik. Mitte numbreid sisestades võib tekkida ootamatuid vigu :)\n";
+
+	while(x == -1 && y == -1 && l == -1)
+	{
+		std::cout << "Kas panna lipp? (1/0) ";
+		std::cin >> l;
+		if(l != 0 && l != 1) 
+		{
+			l = -1;
+			continue;
+		}
+
+		std::cout << "Vali rida: ";
+		std::cin >> y;
+		if (y < 0 || y >= this->korgus)
+		{
+			y = -1;
+			continue;
+		}
+
+		std::cout << "Vali veerg: ";
+		std::cin >> x;
+		if (x < 0 || x >= this->laius)
+		{
+			x = -1;
+			continue;
+		}
+	}
+	this->teeKaik(y, x, l == 1);
+}
 void Minesweeper::handleEvent(const sf::RenderWindow& aken, const sf::Mouse::Button& event) {
 	bool kasLipp = event == sf::Mouse::Button::Right; // event.mouseButton.button == sf::Mouse::Right;
 	int xKoordinaat = sf::Mouse::getPosition(aken).x; //event.mouseButton.x;
@@ -288,6 +346,7 @@ void Minesweeper::kusiManguLauaAndmed() {
 
 	int k{ 0 };
 	int l{ 0 };
+	int t{ -1 };
 	while (true) {
 		std::cout << "Vali mängulaua kõrgus: ";
 		
@@ -300,6 +359,11 @@ void Minesweeper::kusiManguLauaAndmed() {
 		std::cin >> l;
 		//Samamoodi, ei saa olla suurem kui ekraani k�rgus ega negatiivne ega null
 		if (l <= 0 || l > 480) continue;
+
+		std::cout << "Kas kuvada graafiline liides? (1/0): ";
+		std::cin >> t;
+		if (t != 0 && t != 1) {continue;}
+		this->kuvaGraafiliselt = t;
 
 		this->korgus = k;
 		this->laius = l;
@@ -328,3 +392,4 @@ void Minesweeper::kusiManguLauaAndmed() {
 
 	this->koostaManguala(protsent);
 }
+bool Minesweeper::getKuvaGraafika() {return this->kuvaGraafiliselt;}
