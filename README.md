@@ -1,6 +1,6 @@
 # Kirjeldus
 See grupitöö on kloon teadatuntud mängust *Minesweeper*, kasutades loogikaks C++ programmeerimiskeelt ning SFML teeki graafika jaoks.<br /><br />
-<img width="456" height="538" alt="20260509_16h02m24s_grim" src="https://github.com/user-attachments/assets/24b7137d-a6cf-4689-99fb-5c3f43fc04ec" /><br />
+<img width="498" height="417" alt="20260509_16h07m59s_grim" src="https://github.com/user-attachments/assets/81f23ec5-67b7-48a9-ab8d-bc5fdde7edcf" /><br />
 
 
 # Funktsionaalsused
