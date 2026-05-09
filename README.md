@@ -1,5 +1,7 @@
 # Kirjeldus
-See grupitöö on kloon teadatuntud mängust *Minesweeper*, kasutades loogikaks C++ programmeerimiskeelt ning SFML teeki graafika jaoks.<br />
+See grupitöö on kloon teadatuntud mängust *Minesweeper*, kasutades loogikaks C++ programmeerimiskeelt ning SFML teeki graafika jaoks.<br /><br />
+<img width="456" height="538" alt="20260509_16h02m24s_grim" src="https://github.com/user-attachments/assets/24b7137d-a6cf-4689-99fb-5c3f43fc04ec" /><br />
+
 
 # Funktsionaalsused
  - Saab valida mängulaua suuruse (kõrguse ja laiuse eraldi)
